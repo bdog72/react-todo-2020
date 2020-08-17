@@ -4,14 +4,15 @@
 import React from 'react';
 import { Segment, Item, Icon, List, Button } from 'semantic-ui-react';
 import EventListAttendee from './EventListAttendee';
+import { Link } from 'react-router-dom';
 
-export default function EventListItem({ event }) {
+export default function EventListItem({ event, selectEvent, deleteEvent }) {
   return (
     <Segment.Group>
       <Segment>
         <Item.Group>
           <Item>
-            <Item.Image size="tiny" circular src={event.hostPhotoURL} />
+            <Item.Image size='tiny' circular src={event.hostPhotoURL} />
             <Item.Content>
               <Item.Header content={event.title} />
               <Item.Description>Hosted By {event.hostedBy}</Item.Description>
@@ -21,8 +22,8 @@ export default function EventListItem({ event }) {
       </Segment>
       <Segment>
         <span>
-          <Icon name="calendar alternate outline" /> {event.date}
-          <Icon name="marker" /> {event.venue}
+          <Icon name='calendar alternate outline' /> {event.date}
+          <Icon name='marker' /> {event.venue}
         </span>
       </Segment>
       <Segment secondary>
@@ -34,7 +35,19 @@ export default function EventListItem({ event }) {
       </Segment>
       <Segment clearing>
         <div>{event.description}</div>
-        <Button color="teal" floated="right" content="View" />
+        <Button
+          onClick={() => deleteEvent(event.id)}
+          color='red'
+          floated='right'
+          content='Delete'
+        />
+        <Button
+          as={Link}
+          to={`/events/${event.id}`}
+          color='teal'
+          floated='right'
+          content='View'
+        />
       </Segment>
     </Segment.Group>
   );
