@@ -38,3 +38,7 @@ i.icon.marker {
 .mast-head h1.ui.header {
   font-size: 4em;
 }
+
+.react-datepicker-wrapper {
+  width: 100%;
+}

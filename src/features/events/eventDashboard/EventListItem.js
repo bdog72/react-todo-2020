@@ -8,6 +8,8 @@ import { Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { deleteEvent } from '../eventActions';
 
+import { format } from 'date-fns';
+
 export default function EventListItem({ event }) {
   const dispatch = useDispatch();
   return (
@@ -25,7 +27,8 @@ export default function EventListItem({ event }) {
       </Segment>
       <Segment>
         <span>
-          <Icon name='calendar alternate outline' /> {event.date}
+          <Icon name='calendar alternate outline' />{' '}
+          {format(event.date, 'MMMM d, yyyy h:mm a')}
           <Icon name='marker' /> {event.venue}
         </span>
       </Segment>
