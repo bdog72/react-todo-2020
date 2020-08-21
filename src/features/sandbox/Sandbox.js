@@ -1,6 +1,6 @@
 //
 //
-import React from 'react';
+import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Button } from 'semantic-ui-react';
 import { increment, decrement } from './testReducer';
@@ -9,6 +9,7 @@ import { openModal } from '../../app/common/modals/modalReducer';
 
 export default function Sandbox() {
   const dispatch = useDispatch();
+  const [target, setTarget] = useState(null);
   const data = useSelector((state) => state.test.data);
   const { loading } = useSelector((state) => state.async);
   return (
@@ -16,17 +17,24 @@ export default function Sandbox() {
       <h1>Testing 123</h1>
       <h3>The Data is: {data}</h3>
       <Button
-        loading={loading}
+        name='increment'
+        loading={loading && target === 'increment'}
         content='Increment'
         color='green'
-        onClick={() => dispatch(increment(20))}
-        // onClick={() => dispatch({ type: INCREMENT_COUNTER, payload: 10 })}
+        onClick={(e) => {
+          dispatch(increment(20));
+          setTarget(e.target.name);
+        }}
       />
       <Button
-        loading={loading}
+        name='decrement'
+        loading={loading && target === 'decrement'}
         content='Decrement'
         color='red'
-        onClick={() => dispatch(decrement(10))}
+        onClick={(e) => {
+          dispatch(decrement(10));
+          setTarget(e.target.name);
+        }}
       />
       <Button
         content='Open Modal'
