@@ -1,6 +1,7 @@
 //
 //
 import firebase from '../config/firebase';
+import cuid from 'cuid';
 
 const db = firebase.firestore();
 
@@ -23,9 +24,36 @@ export function dataFromSnapshot(snapshot) {
 }
 
 export function listenToEventsFromFirestore() {
-  return db.collection('events');
+  return db.collection('events').orderBy('date');
 }
 
 export function listenToEventFromFirestore(eventId) {
   return db.collection('events').doc(eventId);
+}
+
+export function addEventToFirestore(event) {
+  return db.collection('events').add({
+    ...event,
+    hostedBy: 'Bozo',
+    hostPhotoURL: 'https://randomuser.me/api/portraits/men/72.jpg',
+    attendees: firebase.firestore.FieldValue.arrayUnion({
+      id: cuid(),
+      displayName: 'Attendee',
+      photoURL: 'https://randomuser.me/api/portraits/men/12.jpg',
+    }),
+  });
+}
+
+export function updateEventInFirestore(event) {
+  return db.collection('events').doc(event.id).update(event);
+}
+
+export function deleteEventInFirestore(eventId) {
+  return db.collection('events').doc(eventId).delete();
+}
+
+export function cancelEventToggle(event) {
+  return db.collection('events').doc(event.id).update({
+    isCancelled: !event.isCancelled,
+  });
 }
