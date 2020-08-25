@@ -5,6 +5,7 @@
     "firestore",
     "formik",
     "revents",
-    "toastify"
+    "toastify",
+    "todos"
   ]
 }
