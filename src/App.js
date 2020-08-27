@@ -10,6 +10,7 @@ import Todo from './Todo';
 import db from './firebase';
 
 import firebase from 'firebase';
+import Container from '@material-ui/core/Container';
 
 function App() {
   //
@@ -20,7 +21,9 @@ function App() {
     db.collection('todos')
       .orderBy('timestamp', 'desc')
       .onSnapshot((snapshot) => {
-        setTodos(snapshot.docs.map((doc) => doc.data().todo));
+        setTodos(
+          snapshot.docs.map((doc) => ({ id: doc.id, todo: doc.data().todo }))
+        );
       });
   }, []);
 
@@ -38,31 +41,33 @@ function App() {
 
   return (
     <div className='App'>
-      <h1>TODO</h1>
-      <form action=''>
-        <FormControl>
-          <InputLabel>Write A Todo</InputLabel>
-          <Input
-            value={input}
-            onChange={(event) => setInput(event.target.value)}
-          />
-        </FormControl>
-        <Button
-          variant='contained'
-          color='primary'
-          type='submit'
-          onClick={addTodo}
-          disabled={!input}
-        >
-          Add Todo
-        </Button>
+      <Container maxWidth='md'>
+        <h1>REACT TODO</h1>
+        <form action=''>
+          <FormControl>
+            <InputLabel>Write A Todo</InputLabel>
+            <Input
+              value={input}
+              onChange={(event) => setInput(event.target.value)}
+            />
+          </FormControl>
+          <Button
+            variant='contained'
+            color='primary'
+            type='submit'
+            onClick={addTodo}
+            disabled={!input}
+          >
+            Add Todo
+          </Button>
 
-        <ul>
-          {todos.map((todo) => (
-            <Todo text={todo} />
-          ))}
-        </ul>
-      </form>
+          <ul>
+            {todos.map((todo) => (
+              <Todo todo={todo} />
+            ))}
+          </ul>
+        </form>
+      </Container>
     </div>
   );
 }
